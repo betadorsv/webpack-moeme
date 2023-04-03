@@ -1,17 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import toast from "react-hot-toast";
 import { useHistory } from "react-router-dom";
-import { AppDispatch } from "../../app/store/rootSotre";
-import useWebSocket, { ReadyState } from "react-use-websocket";
 import * as ptCommand from "../../constants/ptCommant";
 import * as ptGroup from "../../constants/ptGroup";
-
-import "./login.scss";
-import { setLoginLocalStorage } from "../../utils/LoginUtils";
-import { login } from "./loginSlice";
 import { useSocket } from "../../hooks/useWebsocket";
-import toast from "react-hot-toast";
-import { LastMessageSocket } from "../../models/socket";
+import "./login.scss";
 
 export default function Login() {
   let history = useHistory();
@@ -47,35 +40,45 @@ export default function Login() {
   }, []);
 
   return (
-    <div className="Auth-form-container">
-      <form className="Auth-form" onSubmit={handleLogin}>
-        <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Sign In</h3>
-          <div className="form-group mt-3">
-            <label>User ID</label>
-            <input
-              type="text"
-              name="userId"
-              className="form-control mt-1"
-              placeholder="Enter User Id"
-            />
-          </div>
-          <div className="form-group mt-3">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              className="form-control mt-1"
-              placeholder="Enter password"
-            />
-          </div>
-          <div className="d-grid gap-2 mt-3">
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </div>
+    <div className="auth">
+      <div className="auth-container">
+        <div className="auth-container--cover">
+          <img
+            src="https://images.unsplash.com/photo-1614200187524-dc4b892acf16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8aXBob25lJTIwY2FyfGVufDB8fDB8fA%3D%3D&w=1000&q=80"
+            alt=""
+          />
         </div>
-      </form>
+        <form className="auth-container--form" onSubmit={handleLogin}>
+          <div className="auth-container--form-content">
+            <h3 className="auth-form-title">
+              Welcom Back <span>MoeMe</span>
+            </h3>
+            <div className="form-group mt-3">
+              <label>User ID</label>
+              <input
+                type="text"
+                name="userId"
+                className="form-control mt-1"
+                placeholder="Enter User Id"
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                className="form-control mt-1"
+                placeholder="Enter password"
+              />
+            </div>
+            <div className="d-grid gap-2 mt-3">
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

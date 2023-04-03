@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "../../layouts/Login/loginSlice"
+import userReducer from "../../layouts/Login/loginSlice";
 import channelReducer from "../../hooks/channelSlice";
 
 const store = configureStore({

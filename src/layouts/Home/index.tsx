@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import FormCreateChannel from "../../components/FormCreateChannel";
-import ListChannel from "../../components/ListChannel"
+import ListChannel from "../../components/ListChannel";
 import "./Homepage.scss";
 
 function index() {

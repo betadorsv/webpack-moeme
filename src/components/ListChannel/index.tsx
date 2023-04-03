@@ -1,12 +1,11 @@
-import { RootState } from "../../app/store/rootSotre";
 import React from "react";
 import { useSelector } from "react-redux";
+import { RootState } from "../../app/store/rootSotre";
 import ItemChannel from "../ItemChannel";
 
 export default function ListChannel() {
-  const listChannel:any = useSelector((state: RootState) => state.channel);
+  const listChannel: any = useSelector((state: RootState) => state.channel);
   const userId = localStorage.getItem("userId");
-
 
   return (
     <div className="channel-list">
