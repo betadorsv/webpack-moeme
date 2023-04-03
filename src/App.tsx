@@ -12,7 +12,7 @@ import {
 import store from "./app/store/rootSotre";
 
 import { Provider } from "react-redux";
-import { getAccessToken } from "services/TokenService";
+
 
 import Header from "../src/components/Header";
 import useWebSocket, { ReadyState } from "react-use-websocket";
