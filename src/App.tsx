@@ -16,13 +16,13 @@ import { getAccessToken } from "services/TokenService";
 
 import Header from "../src/components/Header";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import { Toaster } from "react-hot-toast";
 
 const ContentWrapper = ({ children }: any) => (
   <div className="content-page">{children}</div>
 );
 
 function MoeMe() {
-
   return (
     <Router>
       <Header />
@@ -38,6 +38,7 @@ function MoeMe() {
           <Redirect path="*" to="/login" />
         </Switch>
       </ContentWrapper>
+      <Toaster position="top-center" reverseOrder={false} />
     </Router>
   );
 }
