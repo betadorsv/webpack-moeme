@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { AppDispatch } from "../../app/store/rootSotre"
+import { AppDispatch } from "../../app/store/rootSotre";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import * as ptCommand from "../../constants/ptCommant";
 import * as ptGroup from "../../constants/ptGroup";
@@ -15,8 +15,7 @@ import { LastMessageSocket } from "../../models/socket";
 
 export default function Login() {
   let history = useHistory();
-  const dispatch = useDispatch<AppDispatch>();
-  const { lastJsonMessage, sendJsonMessage } = useSocket();
+  const { sendJsonMessage } = useSocket();
 
   /**
    * Check empty and send param login socket
@@ -39,28 +38,6 @@ export default function Login() {
       sendJsonMessage(param);
     }
   };
-
-  const loginSuccess = (data: LastMessageSocket) => {
-    if (data.result === "success") {
-      dispatch(login(data?.params)); //save infor user into redux
-      setLoginLocalStorage(data?.params); // save info (access token) in to localstorage
-      history.push("/home");
-    } else {
-      toast.error(data?.result); // show message error
-    }
-  };
-
-  useEffect(() => {
-    if (lastJsonMessage) {
-      switch (lastJsonMessage?.ptCommand) {
-        case ptCommand.LOGIN:
-          loginSuccess(lastJsonMessage);
-          break;
-        default:
-          break;
-      }
-    }
-  }, [lastJsonMessage]);
 
   useEffect(() => {
     const isLoggedIn: boolean = localStorage.getItem("userId") ? true : false;

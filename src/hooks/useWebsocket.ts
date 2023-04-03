@@ -4,11 +4,12 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
-import { signOutLocalStorage } from "../utils/LoginUtils";
+import { setLoginLocalStorage, signOutLocalStorage } from "../utils/LoginUtils";
 import * as ptCommand from "../constants/ptCommant";
 import * as ptGroup from "../constants/ptGroup";
 import { LastMessageSocket } from "../models/socket";
 import { getListChannel } from "./channelSlice";
+import { login } from "../layouts/Login/loginSlice";
 
 const SOCKET_URL = "wss://moeme-web-dev.aveapp.com";
 export const useSocket = () => {
@@ -30,6 +31,16 @@ export const useSocket = () => {
     //Will attempt to reconnect on all close events, such as server shutting down
     shouldReconnect: (closeEvent) => true,
   });
+
+  const loginSuccess = (data: LastMessageSocket) => {
+    if (data.result === "success") {
+      dispatch(login(data?.params)); //save infor user into redux
+      setLoginLocalStorage(data?.params); // save info (access token) in to localstorage
+      history.push("/home");
+    } else {
+      toast.error(data?.result); // show message error
+    }
+  };
 
   const getListChannelSuccess = (data: LastMessageSocket) => {
     if (data.result === "success") {
@@ -93,9 +104,10 @@ export const useSocket = () => {
    */
   useEffect(() => {
     if (lastJsonMessage) {
-      let message:any = lastJsonMessage
-      switch (lastJsonMessage?.ptCommand) {
+      let message: LastMessageSocket = lastJsonMessage;
+      switch (message?.ptCommand) {
         case ptCommand.LOGIN: // Create Channel
+          loginSuccess(lastJsonMessage);
           break;
         case ptCommand.CHANNEL_LISTS: // Get List Channel
           getListChannelSuccess(lastJsonMessage);
