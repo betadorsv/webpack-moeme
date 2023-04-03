@@ -52,7 +52,6 @@ export default function Login() {
 
   useEffect(() => {
     if (lastJsonMessage) {
-      console.log(lastJsonMessage);
       switch (lastJsonMessage?.ptCommand) {
         case ptCommand.LOGIN:
           loginSuccess(lastJsonMessage);

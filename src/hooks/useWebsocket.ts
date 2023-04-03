@@ -59,7 +59,6 @@ export const useSocket = () => {
    * @param data Last message socket
    */
   const regsiterSocketSuccess = (data: LastMessageSocket) => {
-    console.log(data);
     if (data.result === "success") {
       handleGetListChannel();
     } else {
@@ -95,7 +94,6 @@ export const useSocket = () => {
   useEffect(() => {
     if (lastJsonMessage) {
       let message:any = lastJsonMessage
-      console.log(lastJsonMessage)
       switch (lastJsonMessage?.ptCommand) {
         case ptCommand.LOGIN: // Create Channel
           break;
