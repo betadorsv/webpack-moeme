@@ -43,3 +43,14 @@
     }
   }
 }
+
+
+/**Custom semantic ui*/
+.ui.menu{
+  background: unset !important;
+  box-shadow: unset !important;
+}
+
+.ui.tabular.menu .active.item{
+  background: none rgba(255, 255, 255, 0.344) !important;
+}
