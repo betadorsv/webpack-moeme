@@ -90,7 +90,7 @@ export default function ListChannel() {
             onClick={handleClickRoomType}
           />
         </Menu>
-        <Menu widths={5}>
+        <Menu widths={activeRoomType === "My Channel" ? 4 : 5}>
           <Menu.Item
             name="All"
             active={activeChannelType === "All"}
@@ -111,11 +111,13 @@ export default function ListChannel() {
             active={activeChannelType === "Special"}
             onClick={handleChangeChannelType}
           />
-          <Menu.Item
-            name="Stock"
-            active={activeChannelType === "Stock"}
-            onClick={handleChangeChannelType}
-          />
+          {activeRoomType !== "My Channel" && (
+            <Menu.Item
+              name="Stock"
+              active={activeChannelType === "Stock"}
+              onClick={handleChangeChannelType}
+            />
+          )}
         </Menu>
       </div>
       <div className="channel-list--box">
