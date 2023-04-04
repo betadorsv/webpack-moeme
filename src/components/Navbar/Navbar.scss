@@ -1,0 +1,23 @@
+.navbar-container{
+  background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #eee;
+    a{
+        height: 70px;
+        width: 70px;
+        color: #000;
+        font-size: 15px;
+        font-weight: 500;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.actived{
+            background-color: #eee;
+        }
+    }
+    
+
+}

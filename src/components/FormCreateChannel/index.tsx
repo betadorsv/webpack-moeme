@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import Modal from "react-bootstrap/Modal";
 import { Form, Input, Radio, Select, TextArea } from "semantic-ui-react";
 import { v1 as uuidv1 } from "uuid";
 import * as ptCommand from "../../constants/ptCommant";
 import * as ptGroup from "../../constants/ptGroup";
 import { useSocket } from "../../hooks/useWebsocket";
+import "./formCreateChannel.scss";
 
 const roomTypes = [
   // { key: "1", text: "1:1 chat room", value: "1" },
@@ -14,7 +16,15 @@ const roomTypes = [
   // { key: "6", text: "Notice chat room", value: "6" },
 ];
 
-export default function FormCreateChannel() {
+export interface FormCreateChannelProps {
+  show: boolean;
+  handleClose: () => void;
+}
+
+export default function FormCreateChannel({
+  show,
+  handleClose,
+}: FormCreateChannelProps) {
   const [roomName, setRoomName] = useState<string>("");
   const [roomComment, setRoomComment] = useState<string>("");
   const [roomType, setRoomType] = useState<string>("2");
@@ -96,58 +106,68 @@ export default function FormCreateChannel() {
     registerSocket();
   }, []);
   return (
-    <div className="channel-contend">
-      <div className="channel-contend--box">
-        <h1>Create Channel Room</h1>
-        <Form>
-          <Form.Group widths="equal">
-            <Form.Field
-              control={Input}
-              label="Room Name"
-              placeholder="Room Name"
-              onChange={handleChangeRoomName}
-              value={roomName}
-            />
+    <Modal show={show} onHide={handleClose}>
+      <div className="modal-add-channel">
+        <div className="modal-add-channel--title">
+          <h5> Create New Channel</h5>
+        </div>
+        <div className="modal-add-channel--box">
+          {/* <h1>Create Channel Room</h1> */}
+          <Form>
+            <Form.Group widths="equal">
+              <Form.Field
+                control={Input}
+                label="Room Name"
+                placeholder="Room Name"
+                onChange={handleChangeRoomName}
+                value={roomName}
+              />
 
+              <Form.Field
+                control={Select}
+                onChange={handleChangeRoomType}
+                value={roomType}
+                label="Room Type"
+                disabled
+                options={roomTypes}
+                placeholder="Room Type"
+              />
+            </Form.Group>
+            <Form.Group inline>
+              <label>Channel Open Type</label>
+              <Form.Field
+                control={Radio}
+                label="Private"
+                value="0"
+                onChange={handleChangeOpenType}
+                checked={openType === "0"}
+              />
+              <Form.Field
+                control={Radio}
+                label="Public"
+                value="1"
+                onChange={handleChangeOpenType}
+                checked={openType === "1"}
+              />
+            </Form.Group>
             <Form.Field
-              control={Select}
-              onChange={handleChangeRoomType}
-              value={roomType}
-              label="Room Type"
-              disabled
-              options={roomTypes}
-              placeholder="Room Type"
+              control={TextArea}
+              label="Room Comment"
+              onChange={handleChangeRoomComment}
+              value={roomComment}
+              placeholder="Tell us more about room..."
             />
-          </Form.Group>
-          <Form.Group inline>
-            <label>Channel Open Type</label>
-            <Form.Field
-              control={Radio}
-              label="Private"
-              value="0"
-              onChange={handleChangeOpenType}
-              checked={openType === "0"}
-            />
-            <Form.Field
-              control={Radio}
-              label="Public"
-              value="1"
-              onChange={handleChangeOpenType}
-              checked={openType === "1"}
-            />
-          </Form.Group>
-          <Form.Field
-            control={TextArea}
-            label="Room Comment"
-            onChange={handleChangeRoomComment}
-            value={roomComment}
-            placeholder="Tell us more about room..."
-          />
-        </Form>
-        <button className="btn-submit" onClick={handleCreateRoom}>
-          Create
-        </button>
+          </Form>
+          <div className="btn">
+            <button className="btn-cancel" onClick={handleClose}>
+              Cancel
+            </button>
+            <button className="btn-submit" onClick={handleCreateRoom}>
+              Create
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+    </Modal>
   );
 }

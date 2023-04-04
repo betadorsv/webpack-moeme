@@ -33,10 +33,10 @@ export default function Login() {
   };
 
   useEffect(() => {
-    const isLoggedIn: boolean = localStorage.getItem("userId") ? true : false;
-    if (!isLoggedIn) {
-      history.push("/login");
-    }
+    const isLoggedIn: boolean = localStorage.getItem("atk") ? true : false;
+    // if (isLoggedIn) {
+    //   history.push("/home");
+    // }
   }, []);
 
   return (

@@ -1,0 +1,84 @@
+.channel {
+  display: flex;
+  &-list {
+    width: 450px;
+
+
+    border-right: 1px solid #eee;
+    &--title {
+      font-size: 20px;
+      font-weight: 700;
+      justify-content: center;
+      margin-top: 10px;
+      text-align: center;
+      align-items: center;
+      //   border-bottom: 1px solid #ccc;
+
+      button {
+        background-color: #fff;
+        border: 1px solid #eee;
+        border-radius: 50px;
+        height: 30px;
+        width: 30px;
+      }
+      button:hover {
+        background-color: #ccc;
+      }
+    }
+
+    &--box {
+      max-height: 88vh;
+      overflow-y: auto;
+      height: calc(100vh - 220px);
+      max-height: calc(100vh - 220px);
+      min-height: calc(100vh - 220px);
+      width: 450px;
+      padding: 0px 20px;
+      &--item {
+        padding: 20px 10px;
+        margin: 8px 0px;
+        display: flex;
+        border: 1px solid #eee;
+        border-radius: 10px;
+      }
+    }
+  }
+  /* Form input container**/
+  // &-contend {
+  //   display: flex;
+  //   flex-direction: column;
+  //   align-items: center;
+  //   justify-content: center;
+  //   width: 100%;
+  //   &--box {
+  //     h1 {
+  //       //title of form input create channel
+  //       margin-bottom: 50px;
+  //       text-align: center;
+  //     }
+  //     position: relative;
+  //     border-radius: 20px;
+  //     padding: 40px;
+  //     box-sizing: border-box;
+  //     background: #ecf0f3;
+  //     box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+  //     .ui.form input[type="text"],
+  //     .ui.selection.dropdown,
+  //     .ui.form textarea,
+  //     .ui.form input[type="text"]:focus,
+  //     .ui.selection.dropdown:focus,
+  //     .ui.form textarea:focus {
+  //       padding: 10px;
+  //       padding-left: 20px;
+  //       background: #ecf0f3;
+  //       font-size: 14px;
+  //       border-color: rgba(0, 0, 0, 0);
+  //       border-radius: 20px;
+  //       outline: none;
+  //       border: 1px solid #eee;
+  //       // box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
+  //     }
+  //   }
+  // }
+}
+

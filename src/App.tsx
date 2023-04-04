@@ -17,6 +17,7 @@ import { Provider } from "react-redux";
 import Header from "../src/components/Header";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { Toaster } from "react-hot-toast";
+import Channel from "./layouts/Channel";
 
 const ContentWrapper = ({ children }: any) => (
   <div className="content-page">{children}</div>
@@ -32,10 +33,13 @@ function MoeMe() {
             <LoginView />
           </Route>
 
-          <Route path="/home">
+          <Route path="/">
             <HomeView />
           </Route>
-          <Redirect path="*" to="/login" />
+          {/* <Route path="/channel">
+            <Channel />
+          </Route> */}
+          {/* <Redirect path="*" to="/login" /> */}
         </Switch>
       </ContentWrapper>
       <Toaster position="top-center" reverseOrder={false} />
