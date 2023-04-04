@@ -4,9 +4,10 @@ import "./listItem.scss";
 
 interface ItemChannelProps {
   channel: any;
+  activeRoomType: string;
 }
 
-const renderTagChannel = (channelType: string) => {
+const renderTagChannel = (channelType: string, activeRoomType: string) => {
   switch (channelType) {
     case "STO":
       return (
@@ -37,12 +38,21 @@ const renderTagChannel = (channelType: string) => {
           <p>Chuyen gia</p>
         </div>
       );
+    case "":
+      if (activeRoomType === "My Channel") {
+        return (
+          <div className="channel-tag">
+            <div className="channel-tag--icon blue"></div>
+            <p>Ca nhan</p>
+          </div>
+        );
+      }
     default:
       break;
   }
 };
 
-function ItemChannel({ channel }: ItemChannelProps) {
+function ItemChannel({ channel, activeRoomType }: ItemChannelProps) {
   return (
     <div className="channel-item">
       <div className="channel-item--content">
@@ -61,7 +71,7 @@ function ItemChannel({ channel }: ItemChannelProps) {
           <h5>
             {channel?.room_name.length > 0 ? channel?.room_name : "No Name"}
           </h5>
-          <>{renderTagChannel(channel?.chnl_type)}</>
+          <>{renderTagChannel(channel?.chnl_type, activeRoomType)}</>
         </div>
       </div>
       <div className="channel-item--footer">

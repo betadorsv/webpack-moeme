@@ -1,5 +1,5 @@
 const Url_Channel =
-  "http://moa.aveapp.com:21405/file/api/down_proc.jsp?type=7&serverfile=";
+  "https://moeme-file-dev.aveapp.com/file/api/down_proc.jsp?type=7&serverfile=";
 
 export const getImageChannel = (imageName: string) => {
   if (imageName.length > 0) {
@@ -10,5 +10,5 @@ export const getImageChannel = (imageName: string) => {
 };
 
 export const getImageUser = (userId: string, roomId: string) => {
-  return `http://moa.aveapp.com:21405/file/api/down_proc.jsp?type=12&userid=${userId}&roomid=${roomId}`;
+  return `https://moeme-file-dev.aveapp.com/file/api/down_proc.jsp?type=12&userid=${userId}&roomid=${roomId}`;
 };

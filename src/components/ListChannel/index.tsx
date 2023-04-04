@@ -20,26 +20,36 @@ const colors = [
   "grey",
   "black",
 ];
-
+const key = "roomId";
 export default function ListChannel() {
   const listChannel: any = useSelector((state: RootState) => state.channel);
   const [activeChannelType, setActiveChannelType] = useState<any>("All");
-  const [activeRoomType, setActiveRoomType] = useState<any>("Subscription channel");
+  const [activeRoomType, setActiveRoomType] = useState<any>(
+    "Subscription channel"
+  );
+  const uniqueChannel = [
+    ...new Map(listChannel?.data?.map((item) => [item[key], item])).values(),
+  ];
 
   const userId = localStorage.getItem("userId");
 
-  let filterChannel: any = listChannel?.data
+  let filterChannel: any = uniqueChannel
     ?.filter((channel: any) => {
       if (activeRoomType === "My Channel") {
         return (
           ["2", "3"].includes(channel?.room_type) && channel?.ownerId === userId
         );
       } else {
-        return listChannel?.data;
+        return (
+          ["2", "3"].includes(channel?.room_type) && channel?.ownerId !== userId
+        );
       }
     })
     .filter((channel: any) => {
-      if (activeChannelType === "Personal") {
+      if (
+        activeChannelType === "Personal" ||
+        (activeRoomType === "My Channel" && activeChannelType === "")
+      ) {
         return channel?.chnl_type === "PER";
       } else if (activeChannelType === "ograniztion") {
         return channel?.chnl_type === "ORG";
@@ -48,13 +58,13 @@ export default function ListChannel() {
       } else if (activeChannelType === "Stock") {
         return channel?.chnl_type === "STO";
       } else {
-        return listChannel?.data;
+        return uniqueChannel;
       }
     });
-console.log(filterChannel)
+
   const handleClickRoomType = (e, { name }) => {
     setActiveRoomType(name);
-    setActiveChannelType("All")
+    setActiveChannelType("All");
   };
 
   const handleChangeChannelType = (e, { name }) => {
@@ -97,7 +107,7 @@ console.log(filterChannel)
             active={activeChannelType === "Special"}
             onClick={handleChangeChannelType}
           />
-                    <Menu.Item
+          <Menu.Item
             name="Stock"
             active={activeChannelType === "Stock"}
             onClick={handleChangeChannelType}
@@ -105,9 +115,14 @@ console.log(filterChannel)
         </Menu>
       </div>
       <div className="channel-list--box">
-        {filterChannel?.map((item, index) => (
-          <ItemChannel key={index} channel={item} />
-        ))}
+        {filterChannel?.length > 0 &&
+          filterChannel?.map((item, index) => (
+            <ItemChannel
+              key={index}
+              channel={item}
+              activeRoomType={activeRoomType}
+            />
+          ))}
       </div>
     </div>
   );
