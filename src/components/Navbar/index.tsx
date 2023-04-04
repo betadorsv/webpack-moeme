@@ -26,7 +26,7 @@ function Navbar() {
           alt=""
         />
       </NavLink>
-      <NavLink to={"/profile"} activeClassName="actived">
+      <NavLink to={"/setting"} activeClassName="actived">
         <img
           height={30}
           src="https://cdn-icons-png.flaticon.com/512/9069/9069049.png"
