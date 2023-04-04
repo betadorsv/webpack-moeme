@@ -53,6 +53,7 @@ const renderTagChannel = (channelType: string, activeRoomType: string) => {
 };
 
 function ItemChannel({ channel, activeRoomType }: ItemChannelProps) {
+
   return (
     <div className="channel-item">
       <div className="channel-item--content">

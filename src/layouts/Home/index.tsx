@@ -21,7 +21,7 @@ function index() {
       history.push("/login");
     }
   }, []);
-  console.log(match)
+
   return (
     <div className="homepage">
       <Navbar />

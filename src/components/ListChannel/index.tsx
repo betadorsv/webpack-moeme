@@ -41,16 +41,19 @@ export default function ListChannel() {
         );
       } else {
         return (
-          ["2", "3"].includes(channel?.room_type) && channel?.ownerId !== userId
+          ["2", "3"].includes(channel?.room_type) &&
+          channel?.ownerId !== userId &&
+          channel?.change_name !== "0"
         );
       }
     })
     .filter((channel: any) => {
-      if (
-        activeChannelType === "Personal" ||
-        (activeRoomType === "My Channel" && activeChannelType === "")
-      ) {
-        return channel?.chnl_type === "PER";
+      if (activeChannelType === "Personal") {
+        if (activeRoomType === "My Channel") {
+          return channel?.chnl_type === "";
+        } else {
+          return channel?.chnl_type === "PER";
+        }
       } else if (activeChannelType === "ograniztion") {
         return channel?.chnl_type === "ORG";
       } else if (activeChannelType === "Special") {
@@ -62,6 +65,7 @@ export default function ListChannel() {
       }
     });
 
+  // ( activeChannelType === "Personal" && activeRoomType === "My Channel" && activeChannelType === "")
   const handleClickRoomType = (e, { name }) => {
     setActiveRoomType(name);
     setActiveChannelType("All");
