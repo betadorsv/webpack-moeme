@@ -33,7 +33,6 @@ export default function FormCreateChannel({
 
   const handleChangeRoomName = (e) => {
     if (e.target.value.length < 20) {
-      //accept max is 20 charater
       setRoomName(e.target.value);
     } else {
       let strimName = e.target.value?.slice(0, 20);

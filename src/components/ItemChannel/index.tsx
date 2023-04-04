@@ -39,21 +39,19 @@ const renderTagChannel = (channelType: string, activeRoomType: string) => {
         </div>
       );
     case "":
-      if (activeRoomType === "My Channel") {
-        return (
-          <div className="channel-tag">
-            <div className="channel-tag--icon blue"></div>
-            <p>Ca nhan</p>
-          </div>
-        );
-      }
+      return (
+        <div className="channel-tag">
+          <div className="channel-tag--icon blue"></div>
+          <p>Ca nhan</p>
+        </div>
+      );
+
     default:
       break;
   }
 };
 
 function ItemChannel({ channel, activeRoomType }: ItemChannelProps) {
-
   return (
     <div className="channel-item">
       <div className="channel-item--content">

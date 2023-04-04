@@ -50,9 +50,9 @@ export default function ListChannel() {
     .filter((channel: any) => {
       if (activeChannelType === "Personal") {
         if (activeRoomType === "My Channel") {
-          return channel?.chnl_type === "";
+          return channel?.chnl_type === "PER"|| channel?.chnl_type==="";
         } else {
-          return channel?.chnl_type === "PER";
+          return channel?.chnl_type === "PER" || channel?.chnl_type==="";
         }
       } else if (activeChannelType === "ograniztion") {
         return channel?.chnl_type === "ORG";
@@ -74,8 +74,12 @@ export default function ListChannel() {
   const handleChangeChannelType = (e, { name }) => {
     setActiveChannelType(name);
   };
+
+
+  console.log(filterChannel)
   return (
     <div className="channel-list">
+      {filterChannel?.length}
       <div className="channel-list--title">
         <Menu tabular widths={2}>
           <Menu.Item
