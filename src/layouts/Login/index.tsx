@@ -44,7 +44,7 @@ export default function Login() {
       <div className="auth-container">
         <div className="auth-container--cover">
           <img
-            src="https://images.unsplash.com/photo-1614200187524-dc4b892acf16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8aXBob25lJTIwY2FyfGVufDB8fDB8fA%3D%3D&w=1000&q=80"
+            src="https://cdn.wallpapersafari.com/55/39/UlXoaq.jpg"
             alt=""
           />
         </div>
