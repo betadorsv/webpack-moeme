@@ -1,21 +1,28 @@
-import { AppDispatch } from "../app/store/rootSotre";
+import { AppDispatch, RootState } from "../app/store/rootSotre";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import { setLoginLocalStorage, signOutLocalStorage } from "../utils/LoginUtils";
 import * as ptCommand from "../constants/ptCommant";
 import * as ptGroup from "../constants/ptGroup";
 import { LastMessageSocket } from "../models/socket";
-import { getListChannel } from "./channelSlice";
+import { getChannelInfo, getListChannel } from "./channelSlice";
 import { login } from "../layouts/Login/loginSlice";
+import { getListmessage } from "./messageSlice";
 
 const SOCKET_URL = "wss://moeme-web-dev.aveapp.com";
 export const useSocket = () => {
   const [socketUrl, setSocketUrl] = useState(SOCKET_URL);
+  const listMessage: any = useSelector(
+    (state: RootState) => state.messages?.data
+  );
+  const roomId: any = useSelector((state: RootState) => state.channel.roomId);
+
   const dispatch = useDispatch<AppDispatch>();
   let history = useHistory();
+
   /**
    * init Socket
    */
@@ -37,6 +44,7 @@ export const useSocket = () => {
       dispatch(login(data?.params)); //save infor user into redux
       setLoginLocalStorage(data?.params); // save info (access token) in to localstorage
       history.push("/home");
+      handleGetListChannel();
     } else {
       toast.error(data?.result); // show message error
     }
@@ -71,7 +79,7 @@ export const useSocket = () => {
    */
   const regsiterSocketSuccess = (data: LastMessageSocket) => {
     if (data.result === "success") {
-      handleGetListChannel();
+      // handleGetListChannel();
     } else {
       toast.error(data.reason || "Pls check token and try again");
     }
@@ -83,6 +91,21 @@ export const useSocket = () => {
       handleGetListChannel(); //get and  update listchannel after create success
     } else {
       toast.error(data.reason || "Create channel error");
+    }
+  };
+
+  const recvMessage = (message: any) => {
+    const newListMessage = [...listMessage, message];
+    if (message.roomId === roomId) {
+      dispatch(getListmessage(newListMessage));
+    }
+  };
+
+  const getListMessage = (data: LastMessageSocket) => {
+    if (data.result === "success") {
+      dispatch(getListmessage(data?.params));
+    } else {
+      dispatch(getListmessage([]));
     }
   };
 
@@ -99,6 +122,15 @@ export const useSocket = () => {
       }
     }
   };
+
+  const getChannelInfoSuccess = (data: LastMessageSocket) => {
+    if (data.result === "success") {
+      dispatch(getChannelInfo(data?.params));
+    } else {
+      console.log("Not found");
+    }
+  };
+
   /**
    * On Listen socket message event
    */
@@ -117,6 +149,15 @@ export const useSocket = () => {
           break;
         case ptCommand.CREATE_ROOM_CHANNEL: // createRoom Socket
           createChannelSuccess(lastJsonMessage);
+          break;
+        case 327681: //get list message
+          getListMessage(lastJsonMessage);
+          break;
+        case 327686: // reciver messsage
+          recvMessage(lastJsonMessage);
+          break;
+        case 262153:
+          getChannelInfoSuccess(lastJsonMessage);
           break;
         default:
           checkMessageResponse(lastJsonMessage);

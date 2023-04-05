@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Menu } from "semantic-ui-react";
-import { RootState } from "../../app/store/rootSotre";
+import { AppDispatch, RootState } from "../../app/store/rootSotre";
 import ItemChannel from "../ItemChannel";
 import "./listChannel.scss";
+import * as ptCommand from "../../constants/ptCommant";
+import * as ptGroup from "../../constants/ptGroup";
+import { useSocket } from "../../hooks/useWebsocket";
+import { removeListMessage, setIsLoading } from "../../hooks/messageSlice";
 
 const colors = [
   "red",
@@ -24,9 +28,12 @@ const key = "roomId";
 export default function ListChannel() {
   const listChannel: any = useSelector((state: RootState) => state.channel);
   const [activeChannelType, setActiveChannelType] = useState<any>("All");
+  const dispatch = useDispatch<AppDispatch>();
   const [activeRoomType, setActiveRoomType] = useState<any>(
     "Subscription channel"
   );
+
+  const { sendJsonMessage } = useSocket();
   const uniqueChannel = [
     ...new Map(listChannel?.data?.map((item) => [item[key], item])).values(),
   ];
@@ -75,7 +82,54 @@ export default function ListChannel() {
     setActiveChannelType(name);
   };
 
-  console.log(filterChannel);
+  const handleGetListChat = (channel: any) => {
+    dispatch(setIsLoading());
+    let params = {
+      params: {
+        covl: 10,
+        lastcid: "1",
+        mode: "3",
+        roomId: channel?.roomId || "",
+        userId: userId,
+        direction: "up",
+      },
+      ptCommand: 327681,
+      ptDevice: "",
+      ptGroup: 327680,
+    };
+    let paramsInfoRoom = {
+      ptCommand: 262153,
+      ptGroup: 262144,
+      ptDevice: "",
+      params: {
+        userId: userId,
+        roomId: channel?.roomId || "",
+      },
+    };
+    sendJsonMessage(paramsInfoRoom);
+    sendJsonMessage(params);
+  };
+
+  /**
+   * Register socket before send message
+   */
+  const registerSocket = () => {
+    let atk = localStorage.getItem("atk"); //accessToken
+    let param = {
+      ptCommand: ptCommand.REGISTER_SOCKET,
+      ptGroup: ptGroup.REGISTER_SOCKET,
+      ptDevice: "",
+      params: {
+        atk: atk,
+      },
+    };
+    sendJsonMessage(param);
+  };
+
+  useEffect(() => {
+    registerSocket();
+  }, []);
+
   return (
     <div className="channel-list">
       {filterChannel?.length}
@@ -127,6 +181,7 @@ export default function ListChannel() {
         {filterChannel?.length > 0 &&
           filterChannel?.map((item, index) => (
             <ItemChannel
+              handleGetListChat={handleGetListChat}
               key={index}
               channel={item}
               activeRoomType={activeRoomType}

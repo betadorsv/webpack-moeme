@@ -1,10 +1,15 @@
-import React from "react";
+import { useSocket } from "../../hooks/useWebsocket";
+import React, { useEffect } from "react";
 import { getImageChannel, getImageUser } from "../../utils";
 import "./listItem.scss";
+import * as ptCommand from "../../constants/ptCommant"
+import * as ptGroup from "../../constants/ptGroup"
+
 
 interface ItemChannelProps {
   channel: any;
   activeRoomType: string;
+  handleGetListChat : (data:any) => void;
 }
 
 const renderTagChannel = (channelType: string, activeRoomType: string) => {
@@ -51,9 +56,11 @@ const renderTagChannel = (channelType: string, activeRoomType: string) => {
   }
 };
 
-function ItemChannel({ channel, activeRoomType }: ItemChannelProps) {
+function ItemChannel({ channel, activeRoomType, handleGetListChat }: ItemChannelProps) {
+  
+
   return (
-    <div className="channel-item">
+    <div className="channel-item" onClick={()=> handleGetListChat(channel)}>
       <div className="channel-item--content">
         <div className="channel-item--content--thumnail">
           <img

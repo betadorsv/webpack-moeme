@@ -1,15 +1,12 @@
 /*channel item card **/
 .channel-item {
   cursor: pointer;
-  //   height: 140px;
   border-radius: 10px;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
   transition: all 0.2s;
   margin-top: 30px;
-
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.19);
-  // box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   border: 1px solid #fff;
   -webkit-backdrop-filter: blur(5px);
@@ -58,14 +55,13 @@
       display: flex;
       align-items: center;
       img {
-        
         margin-right: 10px;
         height: 20px;
         width: 20px;
         object-fit: cover;
         border-radius: 50px;
       }
-      p{
+      p {
         max-width: 150px;
         overflow: hidden;
         text-overflow: ellipsis;
