@@ -137,6 +137,7 @@ export const useSocket = () => {
   useEffect(() => {
     if (lastJsonMessage) {
       let message: LastMessageSocket = lastJsonMessage;
+      // console.log(lastJsonMessage);
       switch (message?.ptCommand) {
         case ptCommand.LOGIN: // Create Channel
           loginSuccess(lastJsonMessage);
