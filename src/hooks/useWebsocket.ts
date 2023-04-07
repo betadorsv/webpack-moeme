@@ -40,10 +40,10 @@ export const useSocket = () => {
   });
 
   const loginSuccess = (data: LastMessageSocket) => {
-    if (data.result === "success") {
+    if (data?.result === "success") {
       dispatch(login(data?.params)); //save infor user into redux
       setLoginLocalStorage(data?.params); // save info (access token) in to localstorage
-      history.push("/home");
+      history?.push("/home");
       handleGetListChannel();
     } else {
       toast.error(data?.result); // show message error
@@ -51,7 +51,7 @@ export const useSocket = () => {
   };
 
   const getListChannelSuccess = (data: LastMessageSocket) => {
-    if (data.result === "success") {
+    if (data?.result === "success") {
       dispatch(getListChannel(data)); // save list channel in to redux
     } else {
       toast.error(data.result);
@@ -78,15 +78,15 @@ export const useSocket = () => {
    * @param data Last message socket
    */
   const regsiterSocketSuccess = (data: LastMessageSocket) => {
-    if (data.result === "success") {
+    if (data?.result === "success") {
       // handleGetListChannel();
     } else {
-      toast.error(data.reason || "Pls check token and try again");
+      toast.error(data?.reason || "Pls check token and try again");
     }
   };
 
   const createChannelSuccess = (data: LastMessageSocket) => {
-    if (data.result === "success") {
+    if (data?.result === "success") {
       toast.success("Create channel success.");
       handleGetListChannel(); //get and  update listchannel after create success
     } else {
@@ -95,14 +95,15 @@ export const useSocket = () => {
   };
 
   const recvMessage = (message: any) => {
+    if(message){
     const newListMessage = [...listMessage, message];
-    if (message.roomId === roomId) {
+    if (message?.roomId === roomId) {
       dispatch(getListmessage(newListMessage));
-    }
+    }}
   };
 
   const getListMessage = (data: LastMessageSocket) => {
-    if (data.result === "success") {
+    if (data?.result === "success") {
       dispatch(getListmessage(data?.params));
     } else {
       dispatch(getListmessage([]));
@@ -114,7 +115,7 @@ export const useSocket = () => {
    * @param data
    */
   const checkMessageResponse = (data: LastMessageSocket) => {
-    if (data.result === "error") {
+    if (data?.result === "error") {
       if (data.reason === "token_invalid") {
         toast.error("Token invalid pls login again");
         signOutLocalStorage();
@@ -124,7 +125,7 @@ export const useSocket = () => {
   };
 
   const getChannelInfoSuccess = (data: LastMessageSocket) => {
-    if (data.result === "success") {
+    if (data?.result === "success") {
       dispatch(getChannelInfo(data?.params));
     } else {
       console.log("Not found");

@@ -33,7 +33,7 @@ export default function TabChat() {
 
   return (
     <>
-      {listMessage && (
+      {true && (
         <div className="tabchat">
           <div className="tabchat-header">
             {!isLoading ? (
