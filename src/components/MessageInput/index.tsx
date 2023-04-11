@@ -13,6 +13,8 @@ export default function MessageInput() {
   const roomId: any = useSelector((state: RootState) => state.channel.roomId);
   const [messageArray, setMessageArray] = useState<any>([]);
   const [onPaste, setOnPaste] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(0);
+  const [onEdited, setOnEdited] = useState<boolean>(false);
 
   const [messageArrayEnter, setMessageArrayEnter] = useState<any>([]);
 
@@ -30,7 +32,7 @@ export default function MessageInput() {
   const handlechangeMessage = (e: any) => {
     let value = e.target.value;
     setMessage(e.target.value);
-    // console.log(startCut.current);
+    console.log(value);
     if (value.length > 0) {
     }
     if (!onPaste) {
@@ -40,15 +42,18 @@ export default function MessageInput() {
           startCut.current,
           value.length
         );
-        // console.log(tempArray.current[step.current].replace(/[^\n]/g, "").length)
         setMessageArrayEnter(tempArray.current);
+
         if (
           tempArray.current[step.current].replace(/[^\n]/g, "").length % 4 ===
             0 &&
           tempArray.current[step.current].replace(/[^\n]/g, "").length !== 0
         ) {
           step.current++;
-          startCut.current = value.length;
+          startCut.current = 0;
+          value = "";
+          setPage(page + 1);
+          setMessage("");
         }
       }
     } else {
@@ -60,80 +65,9 @@ export default function MessageInput() {
       );
       setOnPaste(false);
     }
-    // if (value.length === 0) {
-    //   count.current = 1;
-    //   step.current = 0;
-    //   text.current = "";
-    //   startCut.current = 0;
-    // }
-
-    // if (!onPaste) {
-    //   if (value[value.length - 1] === "\n") {
-    //     text.current += value.substr(startCut.current, value.length);
-    //     startCut.current = value.length;
-    //     console.log("=====");
-    //     console.log(tempArray.current);
-    //     console.log("=====");
-
-    //     if (count.current <= 1 && messageArrayEnter.length <= 0) {
-    //       console.log("1");
-    //       tempArray.current.push({ insert: text.current });
-    //       setMessageArrayEnter(tempArray.current);
-    //     } else {
-    //       tempArray.current[step.current] = { insert: text.current };
-    //       setMessageArrayEnter(tempArray.current);
-    //     }
-
-    //     if (count.current % 5 === 0) {
-    //       step.current++;
-    //       text.current = "";
-    //     }
-    //     count.current++;
-    //   }
-    // } else {
-    //   cutMessage(
-    //     value.substr(
-    //       startCut.current > 0 ? startCut.current - 1 : 0,
-    //       value.length
-    //     )
-    //   );
-    //   setOnPaste(false);
-    // }
-
-    // console.log(result);
-    //    for(let i =0 ; i<value.length;i++){
-    //    }
-
-    // splitStrings(value)
-    // let messageArray = []; // Array save text if overflow
-    // let maxLines = 5;
-    // let maxTextForLine = 10;
-    // let maxOfString = maxLines * maxTextForLine;
-    // let demoMax = 0;
-
-    // if (value.length > maxLines * maxTextForLine) {
-    //     splitStrings(value)
-    // //   for (let i = 0; i < value.length; i += maxOfString) {
-    // //     let subString = value.substr(i, maxOfString);
-
-    // //     let finalText = subString.substr(
-    // //       0,
-    // //       Math.min(subString.length, subString.lastIndexOf(" "))
-    // //     );
-
-    // //     messageArray.push(finalText);
-    // //   }
-    // //   console.log(messageArray);s
-    // } else {
-    //   //   setMessage(e.target.value);
-    // }
-
-    // // console.log(messageArray);
   };
 
   const cutMessage = (value: string) => {
-    // console.log(message);
-
     let fullText = "";
     let newArray = [];
 
@@ -142,7 +76,7 @@ export default function MessageInput() {
     if (result.length > 0) {
       for (let index = 1; index <= result.length; index++) {
         fullText = fullText + (result[index - 1] ? result[index - 1] : "");
-        // console.log(fullText);
+
         if (index % 5 === 0 && index !== 0 && fullText !== undefined) {
           newArray.push({
             insert: index > 5 ? fullText.substr(1, fullText.length) : fullText,
@@ -157,36 +91,24 @@ export default function MessageInput() {
       }
     }
 
-    // console.log("==============NEW ARRAY====================");
-    // console.log(newArray);
-    // console.log(newArray);
     for (let index = 0; index <= newArray.length; index++) {
       tempArray.current[step.current] = newArray[index]?.insert;
       step.current++;
     }
     step.current--;
-    startCut.current = tempArray.current.join().length;
+    startCut.current = tempArray.current.join().length - 2;
 
     setMessageArrayEnter(tempArray.current);
   };
-  // console.log(tempArray.current[indexMessage]);
-  //////
-  // console.log(tempArray.current);
-  const cutMessageByLimit = (value: string) => {
-    // console.log(message);
 
+  const cutMessageByLimit = (value: string) => {
     let fullText = "";
     let newArray = [];
 
     const result = splitStrings(value);
-    console.log("=======================OLD ARRAY====================");
-    console.log(result);
-    console.log("=======================OLD ARRAY====================");
-
     if (result.length > 0) {
       for (let index = 0; index <= result.length; index++) {
         fullText = fullText + (result[index] ? result[index] : "");
-        console.log(fullText);
         if (index % 5 === 0 && index !== 0 && fullText !== undefined) {
           newArray.push({
             insert: fullText,
@@ -201,8 +123,6 @@ export default function MessageInput() {
       }
     }
 
-    console.log("==============NEW ARRAY====================");
-    console.log(newArray);
     setMessageArray([...messageArray, ...newArray]);
   };
 
@@ -253,9 +173,6 @@ export default function MessageInput() {
       }
       startIndex++;
     }
-    // console.log('+=======')
-    // console.log(result);
-    // console.log('+=======')
 
     return result;
   };
@@ -287,7 +204,6 @@ export default function MessageInput() {
       fullText += substring.trim() + "\n";
       startIndex += substring.length;
     }
-    // console.log(fullText);
     return fullText;
   };
   //////
@@ -332,7 +248,7 @@ export default function MessageInput() {
     // cutMessage(message);
     // cutMessageByLimit(message)
     // sendJsonMessage(param);
-    setMessage(""); //reset input message
+    // setMessage(""); //reset input message
   };
 
   const registerSocket = () => {
@@ -362,17 +278,67 @@ export default function MessageInput() {
     return mess !== "" && mess;
   });
 
-  console.log(filterMess);
+  const onEdit = (e) => {
+    let value = e.target.value;
+    console.log(value);
+    setMessage(value);
+    if (!onPaste) {
+      for (let index = 0; index <= value.length; index++) {
+        const element = value[index];
+        tempArray.current[page] = value.substr(0, value.length);
+        setMessageArrayEnter(tempArray.current);
+        console.log( tempArray.current[page].replace(/[^\n]/g, "").length)
+        if (
+          tempArray.current[page].replace(/[^\n]/g, "").length >=5 &&
+          tempArray.current[page].replace(/[^\n]/g, "").length > 0
+        ) {
+          step.current++;
+          startCut.current = 0;
+          value = "";
+          setPage(step.current);
+          setMessage("");
+        } else {
+        }
+      }
+    } else {
+      cutMessage(
+        value.substr(
+          startCut.current > 0 ? startCut.current - 1 : 0,
+          value.length
+        )
+      );
+      setOnPaste(false);
+    }
+  };
+  console.log(filterMess.length)
+  console.log(page)
+
+
+
   return (
     <>
       <div className="message-input-container">
-        <textarea
-          onPaste={() => {
-            setOnPaste(true);
-          }}
-          onKeyDown={(e) => checkOnKeyUp(e)}
-          onChange={handlechangeMessage}
-        />
+        {step.current === page ? (
+          <textarea
+            onPaste={() => {
+              setOnPaste(true);
+            }}
+            value={message}
+            onKeyDown={(e) => checkOnKeyUp(e)}
+            onChange={handlechangeMessage}
+          />
+        ) : (
+          <textarea
+            onPaste={() => {
+              setOnPaste(true);
+            }}
+            value={message}
+            onKeyDown={(e) => checkOnKeyUp(e)}
+            onChange={onEdit}
+            disabled={!onEdited}
+          />
+        )}
+        {page + 1}
         {/* <button onClick={handleSendMessage}>
           <img
             src="https://cdn-icons-png.flaticon.com/512/6532/6532019.png"
@@ -381,7 +347,38 @@ export default function MessageInput() {
         </button> */}
         <div></div>
       </div>
-      {/* Gioi han ky tu */}
+      <div>
+        <button
+          className="lui"
+          onClick={() => {
+            if (page > 0) {
+              setMessage(filterMess[page - 1]);
+              setPage(page - 1);
+              setOnEdited(false);
+            }
+          }}
+        >
+          Lui
+        </button>
+        <button
+          onClick={() => {
+            if (page < filterMess.length) {
+              setMessage(filterMess[page + 1]);
+              setPage(page + 1);
+              setOnEdited(false);
+            }
+          }}
+        >
+          next
+        </button>
+        <button
+          onClick={() => {
+            setOnEdited(true);
+          }}
+        >
+          Edit
+        </button>
+      </div>
       {/* <div className="message-test-page">
         <div className="message-test-page--message">
           {messageArray.length > 0
@@ -395,7 +392,7 @@ export default function MessageInput() {
             }
           }}
         >
-          lui{" "}
+          lui
         </button>
         <button
           onClick={() => {
@@ -404,42 +401,42 @@ export default function MessageInput() {
             }
           }}
         >
-          next{" "}
+          next
         </button>
         {indexMessage}/
         {messageArray.length > 1
           ? messageArray.length - 1
           : messageArray.length}
       </div> */}
-      Enter line
+
       <div className="message-test-page">
         <div className="message-test-page--message">
-          {filterMess[indexMessage] &&
-          filterMess[indexMessage].indexOf("\n") === 0
-            ? filterMess[indexMessage].substr(
-                1,
-                filterMess[indexMessage].length
-              )
-            : filterMess[indexMessage]}
+          {filterMess[indexMessage]}
         </div>
-        <button
-          onClick={() => {
-            if (indexMessage > 0) {
-              setIndexMessage(indexMessage - 1);
-            }
-          }}
-        >
-          lui{" "}
-        </button>
-        <button
-          onClick={() => {
-            if (indexMessage < messageArrayEnter?.length) {
-              setIndexMessage(indexMessage + 1);
-            }
-          }}
-        >
-          next{" "}
-        </button>
+        <div>
+          {messageArrayEnter?.length > 1 && (
+            <div>
+              <button
+                onClick={() => {
+                  if (indexMessage > 0) {
+                    setIndexMessage(indexMessage - 1);
+                  }
+                }}
+              >
+                Back{" "}
+              </button>
+              <button
+                onClick={() => {
+                  if (indexMessage < messageArrayEnter?.length) {
+                    setIndexMessage(indexMessage + 1);
+                  }
+                }}
+              >
+                Next{" "}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

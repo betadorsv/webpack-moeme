@@ -12,6 +12,7 @@ import FormCreateChannel from "../../components/FormCreateChannel";
 import ListChannel from "../../components/ListChannel";
 import "./Homepage.scss";
 import UserSetting from "../UserSetting";
+import ChannelTalk from "../channelTalk";
 
 function index() {
   let history = useHistory();
@@ -37,6 +38,9 @@ function index() {
 
           <Route path={`/setting`}>
             <UserSetting />
+          </Route>
+          <Route path={`/channel-talk`}>
+            <ChannelTalk/>
           </Route>
 
           {/* <Route component={EmptyPage} /> */}

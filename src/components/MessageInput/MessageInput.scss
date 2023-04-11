@@ -2,6 +2,15 @@
   padding: 20px;
   display: flex;
   height: 500px;
+  flex-direction: column;
+  button{
+    background-color: antiquewhite;
+    color: #000;
+    margin: 20px;
+  }
+  .lui{
+    margin-left: -100px;
+  }
   //   background-color: #eee;
   position: relative;
   textarea {
@@ -75,7 +84,7 @@
   button {
     margin: 20px;
     height: 30px;
-    width: 50px;
+    width: 100px;
     &:disabled {
       background-color: #ccc;
       background-image: unset;

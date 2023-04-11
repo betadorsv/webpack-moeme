@@ -33,6 +33,13 @@ function Navbar() {
           alt=""
         />
       </NavLink>
+      <NavLink to={"/channel-talk"} activeClassName="actived">
+        <img
+          height={30}
+          src="https://cdn-icons-png.flaticon.com/512/1828/1828270.png"
+          alt=""
+        />
+      </NavLink>
     </div>
   );
 }
