@@ -13,18 +13,22 @@ export default function ChannelTalk() {
   const [arrayMessage, setArrayMessage] = useState<any>([]);
   const [messageArray, setMessageArray] = useState<any>([]);
   const [currentInput, setCurrentInput] = useState<number>(0);
-
+  const textAreaRef = useRef();
   const messArr = useRef([]);
   const startCut = useRef(0);
   const indexArr = useRef(0);
+  const rowLine = useRef(0);
+
 
   const onChangeMessage = (e) => {
+    let rowText= getTextareaNumberOfLines(textAreaRef.current)
+    rowLine.current=rowText;
     let value = e.target.value;
     if (onPaste) {
       let result = cutMessageByLimit(value);
       messArr.current.push(...result);
-      setMessage("");
-      setOnpaste(false);
+      // setMessage("");
+      // setOnpaste(false);
     } else {
       /**
        * get text of page 1 if if the text is as long as the specified limit and  only slice text
@@ -32,8 +36,7 @@ export default function ChannelTalk() {
        */
 
       if (
-        (value.length === MAX_TEXT && value[value.length - 1] === " ") ||
-        (value.length > MAX_TEXT && value[value.length - 1] === " ")
+        rowText>5
       ) {
         let result = cutMessageByLimit(value);
         messArr.current.push(...result);
@@ -126,6 +129,74 @@ export default function ChannelTalk() {
     }
   };
 
+
+
+
+  const handleTextChange = (e) => {
+    let value = e.target.value
+    const text:any = textAreaRef?.current ;
+    const linesArr = text.value.split("\n");
+    setMessage(value)
+    let row = text
+    for (let index = 0; index < value.length; index++) {
+      const element = value[index];
+      getTextareaNumberOfLines(text )
+    }
+    
+    //  if(  getTextareaNumberOfLines(text)>5  ){
+    //   messArr.current[indexArr.current]= value;
+    //   indexArr.current++
+    //   setMessage("")
+    //   value=""
+    //   setArrayMessage(messArr.current)
+    //  }
+    // if (linesArr.length > 5) {
+    //   setLines(linesArr);
+    // }
+  };
+  console.log(arrayMessage)
+//   const  numOfLines = (textArea, lineHeight) =>{
+//     var h0 = textArea.style.height;
+//     ta.style.height = 'auto';
+//     var h1 = textArea.scrollHeight;
+//     textArea.style.height = h0;
+//     return Math.ceil(h1 / lineHeight);
+// }
+
+const  getTextareaNumberOfLines = (textarea:any) =>{
+  var previous_height = textarea.style.height, lines
+  textarea.style.height = 0
+  lines = parseInt(textarea.scrollHeight/parseInt(getComputedStyle(textarea).lineHeight) )
+  textarea.style.height = previous_height
+   console.log(lines)
+  return lines
+}
+
+  
+
+const handlePaste = (event) => {
+  const clipboardData = event.clipboardData || window.clipboardData;
+  const pastedText = clipboardData.getData("text");
+  const textArea:any = textAreaRef.current;
+  textArea.focus();
+  const originalValue = textArea.value;
+  const selectionStart = textArea.selectionStart;
+  const selectionEnd = textArea.selectionEnd;
+  
+  const beforeSelection = originalValue.slice(0, selectionStart);
+  const afterSelection = originalValue.slice(selectionEnd);
+  const newValue = beforeSelection + pastedText + afterSelection;
+  textArea.value = newValue;
+  const lineHeight = parseInt(getComputedStyle(textArea).lineHeight);
+  const height = textArea.clientHeight;
+  const newRows = Math.round(height / lineHeight);
+  setMessage(newValue);
+  if (newRows > 5) {
+    // setArray([...array, newValue]);
+    console.log(newValue)
+  }
+};
+
   return (
     <div className="channel-talk">
       <p>Tối đa 5 dòng, mỗi dòng giới hạn 50 ký tự ( có thể thay đổi)</p>
@@ -136,9 +207,12 @@ export default function ChannelTalk() {
         {currentInput === messageArray.length ? (
           <textarea
             autoFocus
+            ref={textAreaRef} 
+            // onChange={handleTextChange}
             value={message}
-            onChange={onChangeMessage}
-            onPaste={() => setOnpaste(true)}
+            // onPaste={handlePaste}
+             onChange={onChangeMessage}
+             onPaste={() => setOnpaste(true)}
           />
         ) : (
           <textarea
